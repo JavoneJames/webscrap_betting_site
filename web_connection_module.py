@@ -1,8 +1,9 @@
+from sys import exit as terminate_program
+from time import sleep as prog_sleep
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
-import time
 
 
 class ConnectToWebsite:
@@ -11,22 +12,29 @@ class ConnectToWebsite:
         self.website_url = 'https://sports.williamhill.com/betting/en-gb/football/matches/competition/today/match' \
                            '-betting '
         self.chrome_options = Options()
-        # chrome_options.binary_location = browser_location
         self.chrome_options.browser_version = '100.0.4896.127'
         self.chrome_options.headless = True
-        # self.chrome_options.add_argument("--headless")  # Ensure GUI is off
+        self.chrome_options.page_load_strategy = 'normal'  # do not change load strategy from normal to eager/none
         self.chrome_options.add_argument("--no-sandbox")
-        self.chromedriver_path = './chromedriver'
-        self.webdriver_service = Service(self.chromedriver_path)
+        self.webdriver_service = Service()
+        self.webdriver_service.path = r'./chromedriver'
         self.driver = webdriver.Chrome(service=self.webdriver_service, options=self.chrome_options)
         self.listofteams = []
         self.listofOdds = []
 
     def established_connection(self):
         self.driver.get(self.website_url)
+        prog_sleep(0.5)  # sleep for a couple seconds after accessing site - reduce spam attempts
         cookie_button = self.driver.find_element(by=By.CLASS_NAME, value="cookie-disclaimer__button")
         cookie_button.click()
+        self.driver.maximize_window()
+        prog_sleep(0.5)
+        self.scroll_to_page_bottom()
+        prog_sleep(0.5)
         self.get_epl_fixtures()
+
+    def scroll_to_page_bottom(self):
+        return self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
 
     def get_epl_fixtures(self):
         row_events = self.driver.find_elements(by=By.XPATH, value="//*[@id=\"dml\"]/div/div[2]/section/div/div/article")
