@@ -39,3 +39,8 @@ class ConnectToWebsite:
                 self.listofOdds.append(tuple(odds.text.split('\n')))
         dict_from_list = dict(zip(self.listofteams, self.listofOdds))
         print(dict_from_list)
+        self.end_script()
+
+    def end_script(self):
+        self.driver.quit()
+        terminate_program(1)
