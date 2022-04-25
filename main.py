@@ -1,5 +1,7 @@
-import web_connection_module
+import WilliamHill
+from web_connection_module import SetupScraper
+from WilliamHill import WilliamHill
 
 if __name__ == '__main__':
-    conn = web_connection_module.ConnectToWebsite()
-    conn.established_connection()
+    william = WilliamHill('https://sports.williamhill.com/betting/en-gb/football/matches/competition/today/match-betting')
+    william.established_connection()
