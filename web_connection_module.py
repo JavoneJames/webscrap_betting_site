@@ -19,18 +19,17 @@ class ConnectToWebsite:
         self.webdriver_service = Service()
         self.webdriver_service.path = r'./chromedriver'
         self.driver = webdriver.Chrome(service=self.webdriver_service, options=self.chrome_options)
+        self.driver.implicitly_wait(30)
         self.listofteams = []
         self.listofOdds = []
 
     def established_connection(self):
         self.driver.get(self.website_url)
-        prog_sleep(0.5)  # sleep for a couple seconds after accessing site - reduce spam attempts
         cookie_button = self.driver.find_element(by=By.CLASS_NAME, value="cookie-disclaimer__button")
         cookie_button.click()
         self.driver.maximize_window()
-        prog_sleep(0.5)
         self.scroll_to_page_bottom()
-        prog_sleep(0.5)
+        prog_sleep(10)
         self.get_epl_fixtures()
 
     def scroll_to_page_bottom(self):
