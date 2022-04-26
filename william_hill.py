@@ -9,8 +9,8 @@ from selenium.webdriver.common.by import By
 
 class WilliamHill(SetupScraper):
 
-    def __init__(self, website_url):
-        super().__init__(website_url)
+    def __init__(self):
+        super().__init__(website_url='https://sports.williamhill.com/betting/en-gb/football/matches/competition/today/match-betting')
 
     def established_connection(self):
         self.driver.get(self.website_url)
