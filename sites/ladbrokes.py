@@ -1,9 +1,6 @@
-from web_connection_module import SetupScraper
+from main.web_connection_module import SetupScraper
 from sys import exit as terminate_program
 from time import sleep as prog_sleep
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 
 

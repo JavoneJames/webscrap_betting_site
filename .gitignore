@@ -1,5 +1,6 @@
 /.venv/
-/chromedriver
+/sites/chromedriver
 .idea/
 /__pycache__/
 /notes
+main/__pycache__/
