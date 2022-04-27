@@ -1,13 +1,14 @@
-from main.web_connection_module import SetupScraper
 from sys import exit as terminate_program
 from time import sleep as prog_sleep
 from selenium.webdriver.common.by import By
+from web_connection_module import SetupScraper
 
 
 class WilliamHill(SetupScraper):
 
     def __init__(self):
-        super().__init__(website_url='https://sports.williamhill.com/betting/en-gb/football/matches/competition/today/match-betting')
+        super().__init__(
+            website_url='https://sports.williamhill.com/betting/en-gb/football/matches/competition/today/match-betting')
 
     def established_connection(self):
         self.driver.get(self.website_url)
@@ -37,4 +38,3 @@ class WilliamHill(SetupScraper):
     def end_script(self):
         self.driver.quit()
         terminate_program(1)
-

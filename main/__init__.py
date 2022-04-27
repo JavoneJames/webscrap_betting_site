@@ -1,1 +1,0 @@
-from main.web_connection_module import SetupScraper
