@@ -11,6 +11,8 @@ class SetupScraper:
         self.chrome_options = Options()
         self.chrome_options.browser_version = '100.0.4896.127'
         self.chrome_options.headless = True
+        # self.driver.maximize_window()
+        self.chrome_options.add_argument('window-size=1920x1080')
         self.chrome_options.page_load_strategy = 'normal'  # do not change load strategy from normal to eager/none
         self.chrome_options.add_argument("--no-sandbox")
         self.webdriver_service = Service()

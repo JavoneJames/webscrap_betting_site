@@ -1,7 +1,11 @@
 from sys import exit as terminate_program
 from time import sleep as prog_sleep
+
+import pandas
 from selenium.webdriver.common.by import By
 from web_connection_module import SetupScraper
+from pandas import DataFrame, set_option
+import numpy as np
 
 
 class WilliamHill(SetupScraper):
@@ -14,26 +18,27 @@ class WilliamHill(SetupScraper):
         self.driver.get(self.website_url)
         cookie_button = self.driver.find_element(by=By.CLASS_NAME, value="cookie-disclaimer__button")
         cookie_button.click()
-        self.driver.maximize_window()
         self.scroll_to_page_bottom()
-        prog_sleep(10)
-        self.get_epl_fixtures()
+        prog_sleep(.5)
+        self.get_fixtures()
 
     def scroll_to_page_bottom(self):
         return self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
 
-    def get_epl_fixtures(self):
-        row_events = self.driver.find_elements(by=By.XPATH, value="//*[@id=\"dml\"]/div/div[2]/section/div/div/article")
-        for row in row_events:
-            teams_playing = row.find_elements(by=By.CLASS_NAME, value="sp-betName")
-            team_odds = row.find_elements(by=By.CLASS_NAME, value="sp-o-market__buttons")
-            for fixtures in teams_playing:
-                self.listofteams.append(fixtures.text)
-            for odds in team_odds:
-                self.listofOdds.append(tuple(odds.text.split('\n')))
-        dict_from_list = dict(zip(self.listofteams, self.listofOdds))
-        print(dict_from_list)
-        self.end_script()
+    def get_fixtures(self):
+        matches = self.driver.find_elements(by=By.CSS_SELECTOR,
+                                            value="#dml > div > div.dml-page-loader.dml-page-loader--pb > section:nth-child(n+1) > div > div > article:nth-child(n+2) > div.sp-o-market__title > a > span")
+        odds = self.driver.find_elements(by=By.CSS_SELECTOR,
+                                         value="#dml > div > div.dml-page-loader.dml-page-loader--pb > section:nth-child(n+1) > div > div > article:nth-child(n+2) > section")
+        for count, match in enumerate(matches, start=1):
+            self.listofteams.append(match.text)
+        for counter, odd in enumerate(odds, start=1):
+            self.listofOdds.append(odd.text)
+        self.driver.quit()
+        dict_list = {'Teams': self.listofteams, 'Odds': self.listofOdds}
+        test_table = DataFrame.from_dict(dict_list)
+        print(test_table)
+        terminate_program(1)
 
     def end_script(self):
         self.driver.quit()
